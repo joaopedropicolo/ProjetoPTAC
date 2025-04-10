@@ -1,12 +1,17 @@
 import { auth } from './config/firebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
-import styles from './styles/App.module.css'
-import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom';
+import { SignJWT } from 'jose';  // Corrected import
+import styles from './styles/App.module.css';
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 export default function App() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+
+  const navigate = useNavigate();
 
   const Autenticacao = async (evento) => {
     evento.preventDefault();
@@ -19,6 +24,14 @@ export default function App() {
         showConfirmButton: false,
         timer: 1500
       });
+      const secretKey = new TextEncoder().encode('minhaChaveSecreta');
+      const token = await new SignJWT({ user: 'admin' })
+        .setProtectedHeader({ alg: 'HS256' })
+        .setIssuedAt()
+        .setExpirationTime('1h')
+        .sign(secretKey);
+      localStorage.setItem('token', token);
+      navigate('/');
     } catch (err) {
       Swal.fire({
         position: "top-end",
@@ -31,16 +44,31 @@ export default function App() {
   };
 
   return (
-  <>
-  <main className={styles.main}>
-  <form className={styles.form} onSubmit={Autenticacao}>
-    <label htmlFor="email">E-mail:</label>
-    <input id="email" name="email" type="email" value={email} onChange={(evento) => setEmail(evento.target.value)} />
-    <label htmlFor="password">Senha:</label>
-    <input id="password" name="password" type="password" value={senha} onChange={(evento) => setSenha(evento.target.value)} />
-    <button type="submit">Entrar</button>
-  </form>
-</main>
-  </>
+    <>
+      <main className={styles.main}>
+        <form className={styles.form} onSubmit={Autenticacao}>
+          <label htmlFor="email">E-mail:</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={email}
+            onChange={(evento) => setEmail(evento.target.value)}
+          />
+          <label htmlFor="password">Senha:</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            value={senha}
+            onChange={(evento) => setSenha(evento.target.value)}
+          />
+          <button type="submit">Entrar</button>
+          <Link to="/Registrar">
+            Não tenho conta
+          </Link>
+        </form>
+      </main>
+    </>
   );
 }
