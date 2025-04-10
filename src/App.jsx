@@ -2,7 +2,7 @@ import { auth } from './config/firebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SignJWT } from 'jose';  // Corrected import
+import { SignJWT } from 'jose';
 import styles from './styles/App.module.css';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
