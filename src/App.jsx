@@ -6,6 +6,10 @@ import { SignJWT } from 'jose';
 import styles from './styles/App.module.css';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
+import KeyIcon from '@mui/icons-material/Key';
+import EmailIcon from '@mui/icons-material/Email';
+import LoginIcon from '@mui/icons-material/Login';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -47,7 +51,8 @@ export default function App() {
     <>
       <main className={styles.main}>
         <form className={styles.form} onSubmit={Autenticacao}>
-          <label htmlFor="email">E-mail:</label>
+        <h2>Login</h2>
+          <label htmlFor="email"><EmailIcon/>E-mail:</label>
           <input
             id="email"
             name="email"
@@ -55,7 +60,7 @@ export default function App() {
             value={email}
             onChange={(evento) => setEmail(evento.target.value)}
           />
-          <label htmlFor="password">Senha:</label>
+          <label htmlFor="password"><KeyIcon/>Senha:</label>
           <input
             id="password"
             name="password"
@@ -63,9 +68,9 @@ export default function App() {
             value={senha}
             onChange={(evento) => setSenha(evento.target.value)}
           />
-          <button type="submit">Entrar</button>
+          <button type="submit"><LoginIcon/>Entrar</button>
           <Link to="/Registrar">
-            Não tenho conta
+            <PersonOffIcon/>Não tenho conta
           </Link>
         </form>
       </main>
